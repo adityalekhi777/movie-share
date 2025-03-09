@@ -3,9 +3,12 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { MovieProvider } from "./context/MovieContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <App />
+    <MovieProvider>
+      <App />
+    </MovieProvider>
   </BrowserRouter>
 );
