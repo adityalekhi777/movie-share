@@ -4,11 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MovieProvider } from "./context/MovieContext";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <MovieProvider>
-      <App />
-    </MovieProvider>
+   <AuthProvider>
+      <MovieProvider>
+        <App />
+      </MovieProvider>
+    </AuthProvider>
   </BrowserRouter>
 );
