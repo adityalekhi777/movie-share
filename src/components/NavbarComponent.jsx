@@ -11,6 +11,7 @@ function NavbarComponent() {
         <Navbar.Brand as={Link} to="/">MovieShare</Navbar.Brand>
         <Nav>
           <Nav.Link as={Link} to="/">Home</Nav.Link>
+          <Nav.Link as={Link} to="/search">Search</Nav.Link>
           <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
           {user ? (
             <Button variant="outline-light" onClick={logout}>Logout</Button>
