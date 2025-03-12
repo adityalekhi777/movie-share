@@ -1,43 +1,68 @@
-import { useMovies } from "../context/MovieContext";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { db, storage } from "../config/firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { Button, Form } from "react-bootstrap";
 
 function Profile() {
-  const { savedMovies } = useMovies();
   const { user } = useAuth();
-  // const location = useLocation();
-  const [profileLink, setProfileLink] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [newAvatar, setNewAvatar] = useState(null);
 
   useEffect(() => {
     if (user) {
-      setProfileLink(`${window.location.origin}/profile/${user.uid}`);
+      const fetchProfile = async () => {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          setDisplayName(userDoc.data().displayName);
+          setAvatarUrl(userDoc.data().avatarUrl);
+        }
+      };
+      fetchProfile();
     }
   }, [user]);
 
+  const handleAvatarChange = (e) => {
+    if (e.target.files[0]) {
+      setNewAvatar(e.target.files[0]);
+    }
+  };
+
+  const uploadAvatar = async () => {
+    if (!newAvatar || !user) return;
+
+    const avatarRef = ref(storage, `avatars/${user.uid}`);
+    await uploadBytes(avatarRef, newAvatar);
+    const downloadURL = await getDownloadURL(avatarRef);
+
+    await updateDoc(doc(db, "users", user.uid), { avatarUrl: downloadURL });
+    setAvatarUrl(downloadURL);
+  };
+
   return (
     <div className="container mt-4">
-      <h1>{user ? "Your" : "User"} Profile</h1>
-      
-      {user && (
-        <div className="mb-3">
-          <p>Share your profile:</p>
-          <input type="text" value={profileLink} readOnly className="form-control" />
-        </div>
-      )}
+      <h2>Profile</h2>
 
-      {savedMovies.length === 0 ? (
-        <p>No saved movies yet.</p>
-      ) : (
-        <ul className="list-group">
-          {savedMovies.map((movie) => (
-            <li key={movie.id} className="list-group-item">
-              {movie.title}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="text-center">
+        <img
+          src={avatarUrl || "https://via.placeholder.com/150"}
+          alt="User Avatar"
+          className="rounded-circle"
+          width="150"
+        />
+      </div>
+
+      <Form className="mt-3">
+        <Form.Group>
+          <Form.Label>Change Avatar</Form.Label>
+          <Form.Control type="file" onChange={handleAvatarChange} />
+        </Form.Group>
+        <Button className="mt-2" onClick={uploadAvatar}>Upload</Button>
+      </Form>
+
+      <p className="mt-3"><strong>Display Name:</strong> {displayName}</p>
     </div>
   );
 }
