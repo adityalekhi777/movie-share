@@ -10,19 +10,20 @@ export const MovieProvider = ({ children }) => {
   const { user } = useAuth();
   const [savedMovies, setSavedMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
 
   useEffect(() => {
     if (user) {
       fetchSavedMovies();
     } else {
-      setSavedMovies([]); // Clear movies on logout
+      setSavedMovies([]);
     }
+    fetchPopularMovies();
   }, [user]);
 
   // Fetch saved movies from Firestore
   const fetchSavedMovies = async () => {
     if (!user) return;
-
     try {
       const q = query(collection(db, "movies"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);
@@ -36,26 +37,24 @@ export const MovieProvider = ({ children }) => {
   // Save a movie to Firestore
   const addMovie = async (movie) => {
     if (!user) return alert("You must be logged in to save movies");
-
     try {
       await addDoc(collection(db, "movies"), {
         userId: user.uid,
         title: movie.title,
-        traktId: movie.id,
+        traktId: movie.ids.trakt,
       });
-      setSavedMovies([...savedMovies, movie]); // Update state after saving
+      setSavedMovies([...savedMovies, movie]);
     } catch (error) {
       console.error("Error adding movie:", error);
     }
   };
 
-  // Fetch movies from Trakt API
-  const searchMovies = async (query) => {
-    if (!query) return;
-
+  // Fetch movies from Trakt API using extended=images
+  const searchMovies = async (queryStr) => {
+    if (!queryStr) return;
     try {
       const response = await axios.get(
-        `https://api.trakt.tv/search/movie?query=${query}`,
+        `https://api.trakt.tv/search/movie?query=${queryStr}&extended=images`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -70,8 +69,27 @@ export const MovieProvider = ({ children }) => {
     }
   };
 
+  // Fetch popular movies from Trakt API using extended=images
+  const fetchPopularMovies = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.trakt.tv/movies/popular?extended=images`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "trakt-api-version": "2",
+            "trakt-api-key": import.meta.env.VITE_TRAKT_API_KEY,
+          },
+        }
+      );
+      setPopularMovies(response.data);
+    } catch (error) {
+      console.error("Error fetching popular movies:", error);
+    }
+  };
+
   return (
-    <MovieContext.Provider value={{ savedMovies, addMovie, searchMovies, searchResults }}>
+    <MovieContext.Provider value={{ savedMovies, addMovie, searchMovies, searchResults, popularMovies }}>
       {children}
     </MovieContext.Provider>
   );
