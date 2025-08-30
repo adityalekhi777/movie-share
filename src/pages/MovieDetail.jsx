@@ -61,7 +61,7 @@ const MovieDetail = () => {
   // Helper function to get the poster URL from the movie images
   const getPoster = () => {
     if (movie.images && movie.images.poster && movie.images.poster.length > 0) {
-      const url = movie.images.poster[0];
+      const url = movie.images.banner[0];
       return url.startsWith("http") ? url : `https://${url}`;
     }
     return placeholder;
