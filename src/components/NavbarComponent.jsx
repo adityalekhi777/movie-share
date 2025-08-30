@@ -12,7 +12,7 @@ function NavbarComponent() {
         <Nav>
           <Nav.Link as={Link} to="/">Home</Nav.Link>
           <Nav.Link as={Link} to="/search">Search</Nav.Link>
-          <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+          {user && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>}
           {user ? (
             <Button variant="outline-light" onClick={logout}>Logout</Button>
           ) : (
