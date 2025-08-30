@@ -7,6 +7,7 @@ import NavbarComponent from "./components/NavbarComponent";
 import Search from "./pages/Search";
 import PublicProfile from "./pages/PublicProfile";
 import MovieDetail from "./pages/MovieDetail";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -14,7 +15,13 @@ function App() {
       <NavbarComponent />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }/>
         <Route path="/profile/:userId" element={<PublicProfile />} />
         <Route path="/movie/:movieId" element={<MovieDetail />} />
         <Route path="/search" element={<Search />} />
