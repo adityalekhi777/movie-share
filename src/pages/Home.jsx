@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useMovies } from "../context/MovieContext";
 import { Link } from "react-router-dom";
 import { Card, Button, Alert } from "react-bootstrap";
+import styles from './Home.module.css';
+import Slider from '../components/Slider';
 
 const Home = () => {
   const { popularMovies, addMovie } = useMovies();
@@ -39,36 +41,40 @@ const Home = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Popular Movies</h2>
-      {saveMessage && <Alert variant="success">{saveMessage}</Alert>}
-      <div className="row">
-        {popularMovies.map((movie) => (
-          <div key={movie.ids.trakt} className="col-md-3 mb-4">
-            <Card>
-              {/* Use movie.ids.slug for navigation */}
-              <Link to={`/movie/${movie.ids.slug}`}>
-                <Card.Img
-                  variant="top"
-                  src={getImageUrl(movie.images)}
-                  onError={(e) => (e.target.src = placeholder)}
-                  alt={movie.title}
-                />
-              </Link>
-              <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
-                <div className="d-flex justify-content-between">
-                  <Button variant="outline-light" onClick={() => handleSave(movie)}>
-                    Save
-                  </Button>
-                  <Link to={`/movie/${movie.ids.slug}`}>
-                    <Button variant="outline-light">View Details</Button>
-                  </Link>
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
+    <div className={styles.container}>
+      <h1 className={styles.title}>Welcome to Movie Share</h1>
+      <Slider />
+      <div className="container mt-4">
+        <h2>Popular Movies</h2>
+        {saveMessage && <Alert variant="success">{saveMessage}</Alert>}
+        <div className="row">
+          {popularMovies.map((movie) => (
+            <div key={movie.ids.trakt} className="col-md-3 mb-4">
+              <Card>
+                {/* Use movie.ids.slug for navigation */}
+                <Link to={`/movie/${movie.ids.slug}`}>
+                  <Card.Img
+                    variant="top"
+                    src={getImageUrl(movie.images)}
+                    onError={(e) => (e.target.src = placeholder)}
+                    alt={movie.title}
+                  />
+                </Link>
+                <Card.Body>
+                  <Card.Title>{movie.title}</Card.Title>
+                  <div className="d-flex justify-content-between">
+                    <Button variant="outline-light" onClick={() => handleSave(movie)}>
+                      Save
+                    </Button>
+                    <Link to={`/movie/${movie.ids.slug}`}>
+                      <Button variant="outline-light">View Details</Button>
+                    </Link>
+                  </div>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

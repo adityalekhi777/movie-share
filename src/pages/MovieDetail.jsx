@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Card, Button, ListGroup } from "react-bootstrap";
+import "./MovieDetail.css";
 
 const MovieDetail = () => {
   // 'id' is the movie slug (e.g., "deadpool-2016")
@@ -61,26 +61,37 @@ const MovieDetail = () => {
   // Helper function to get the poster URL from the movie images
   const getPoster = () => {
     if (movie.images && movie.images.poster && movie.images.poster.length > 0) {
-      const url = movie.images.banner[0];
-      return url.startsWith("http") ? url : `https://${url}`;
+      const posterUrl = movie.images.poster[0];
+      return posterUrl.startsWith('http') ? posterUrl : `https://${posterUrl}`;
     }
     return placeholder;
   };
 
+  // New function to get the background image from the API using the banner image
+  const getBackground = () => {
+    if (movie.images && movie.images.banner && movie.images.banner.length > 0) {
+      const bannerUrl = movie.images.banner[0];
+      return bannerUrl.startsWith('http') ? bannerUrl : `https://${bannerUrl}`;
+    }
+    return ''; // default background if none available
+  };
+
   return (
-    <div className="container mt-4">
-      <Card>
-        <Card.Img
-          variant="top"
+    <div className="movie-detail-container" style={{ backgroundImage: `url(${getBackground()})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="movie-detail-card">
+        <img
+          className="movie-detail-poster"
           src={getPoster()}
           onError={(e) => (e.target.src = placeholder)}
           alt={movie.title}
         />
-        <Card.Body>
-          <Card.Title>{movie.title} ({movie.year})</Card.Title>
-          <Card.Text>{movie.overview}</Card.Text>
+        <div className="movie-detail-content">
+          <div className="movie-detail-title">
+            {movie.title} <span className="movie-detail-year">({movie.year})</span>
+          </div>
+          <div className="movie-detail-overview">{movie.overview}</div>
           {movie.trailer && (
-            <div className="mb-3">
+            <div className="movie-detail-trailer">
               <h5>Trailer</h5>
               <a href={movie.trailer} target="_blank" rel="noopener noreferrer">
                 Watch Trailer
@@ -88,22 +99,22 @@ const MovieDetail = () => {
             </div>
           )}
           {people && people.cast && people.cast.length > 0 && (
-            <>
+            <div className="movie-detail-cast">
               <h5>Cast</h5>
-              <ListGroup variant="flush">
+              <ul>
                 {people.cast.slice(0, 5).map((person, index) => (
-                  <ListGroup.Item key={index}>
+                  <li key={index}>
                     {person.person.name} as {person.character}
-                  </ListGroup.Item>
+                  </li>
                 ))}
-              </ListGroup>
-            </>
+              </ul>
+            </div>
           )}
-          <Button variant="primary" className="mt-3" onClick={() => window.history.back()}>
+          <button className="movie-detail-back-btn" onClick={() => window.history.back()}>
             Go Back
-          </Button>
-        </Card.Body>
-      </Card>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
