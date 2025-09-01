@@ -1,0 +1,38 @@
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.slideImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.navButton {
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.navButton:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+.navButton:first-of-type {
+  left: 10px;
+}
+
+.navButton:last-of-type {
+  right: 10px;
+}
+
+/* Additional styling for the slider can be added here */
