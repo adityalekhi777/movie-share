@@ -15,16 +15,31 @@
   margin-bottom: 20px;
 }
 
-.moviesContainer {
-  margin-top: 20px;
+.searchForm {
+  display: flex;
+  margin-bottom: 20px;
 }
 
-.alert {
-  background-color: #28a745;
-  color: #fff;
+.searchInput {
+  flex-grow: 1;
   padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+}
+
+.container.dark .searchInput {
+  background-color: #333;
+  border-color: #555;
+  color: #fff;
+}
+
+.searchButton {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
 }
 
 .movieGrid {
@@ -61,11 +76,6 @@
 .movieTitle {
   font-size: 1.2rem;
   margin-bottom: 10px;
-}
-
-.buttonGroup {
-  display: flex;
-  justify-content: space-between;
 }
 
 .button {

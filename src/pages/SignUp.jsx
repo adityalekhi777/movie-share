@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { Form, Button, Card, Container, Row, Col } from "react-bootstrap";
+import styles from './LoginSignUp.module.css';
 
 const SignUp = () => {
   const [displayName, setDisplayName] = useState("");
@@ -9,65 +9,56 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
-      // Assume signUp returns a promise that signs the user up and saves their profile info
       await signUp(email, password, displayName);
       navigate("/");
     } catch (error) {
       console.error("Sign up error:", error);
+      setError('Failed to create an account');
     }
   };
 
   return (
-    <Container className="mt-4">
-      <Row className="justify-content-md-center">
-        <Col md={6}>
-          <Card bg="dark" text="light" className="p-4 shadow-sm">
-            <Card.Title className="text-center mb-4">Sign Up</Card.Title>
-            <Card.Body>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formDisplayName">
-                  <Form.Label>Display Name</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    placeholder="Enter display name" 
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control 
-                    type="email" 
-                    placeholder="Enter email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit" className="w-100">
-                  Sign Up
-                </Button>
-              </Form>
-              <div className="mt-3 text-center">
-                Already have an account? <Link to="/login" className="text-light">Login</Link>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h1 className={styles.title}>Sign Up</h1>
+        {error && <div className={styles.error}>{error}</div>}
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            type="text"
+            placeholder="Display Name"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            className={styles.input}
+          />
+          <input 
+            type="email" 
+            placeholder="Email address" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={styles.input}
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.input}
+          />
+          <button type="submit" className={styles.button}>
+            Sign Up
+          </button>
+        </form>
+        <div className={styles.text}>
+          Already have an account? <Link to="/login" className={styles.link}>Login</Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

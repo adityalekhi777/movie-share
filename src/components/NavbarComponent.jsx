@@ -1,29 +1,34 @@
-import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
+import styles from './NavbarComponent.module.css';
 
 function NavbarComponent() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <Navbar bg="dark" variant="dark">
-      <Container>
-        <Navbar.Brand as={Link} to="/">MovieShare</Navbar.Brand>
-        <Nav>
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
-          <Nav.Link as={Link} to="/search">Search</Nav.Link>
-          {user && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>}
+    <nav className={`${styles.navbar} ${theme === 'dark' ? styles.dark : ''}`}>
+      <div className={styles.container}>
+        <Link to="/" className={styles.brand}>MovieShare</Link>
+        <div className={styles.nav}>
+          <Link to="/" className={styles.navLink}>Home</Link>
+          <Link to="/search" className={styles.navLink}>Search</Link>
+          {user && <Link to="/profile" className={styles.navLink}>Profile</Link>}
+          <button onClick={toggleTheme} className={styles.themeToggle}>
+            {theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+          </button>
           {user ? (
-            <Button variant="outline-light" onClick={logout}>Logout</Button>
+            <button onClick={logout} className={styles.button}>Logout</button>
           ) : (
             <>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
-              <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
+              <Link to="/login" className={styles.navLink}>Login</Link>
+              <Link to="/signup" className={styles.navLink}>Sign Up</Link>
             </>
           )}
-        </Nav>
-      </Container>
-    </Navbar>
+        </div>
+      </div>
+    </nav>
   );
 }
 

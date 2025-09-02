@@ -1,0 +1,88 @@
+/* LoginSignUp.module.css */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #141414;
+  color: #fff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.formContainer {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 60px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin-bottom: 28px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  height: 50px;
+  line-height: 50px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.input:focus {
+  outline: none;
+  background-color: #454545;
+}
+
+.button {
+  background-color: #14aefa;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #74acf0;
+}
+
+.text {
+  margin-top: 16px;
+  color: #737373;
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.error {
+    background-color: #e87c03;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    text-align: center;
+}
