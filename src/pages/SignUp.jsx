@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from './LoginSignUp.module.css';
+import { useTheme } from "../context/ThemeContext";
 
 const SignUp = () => {
   const [displayName, setDisplayName] = useState("");
@@ -10,6 +11,7 @@ const SignUp = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const { theme } = useTheme();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
       <div className={styles.formContainer}>
         <h1 className={styles.title}>Sign Up</h1>
         {error && <div className={styles.error}>{error}</div>}

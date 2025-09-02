@@ -5,8 +5,6 @@
 }
 
 .container.dark {
-  background-color: #121212;
-  color: #fff;
 }
 
 .title {
@@ -25,6 +23,7 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px 0 0 4px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .container.dark .searchInput {
@@ -40,6 +39,16 @@
   color: white;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.container.dark .searchButton {
+  background-color: #444;
+  color: #fff;
+}
+
+.container.dark .searchButton:hover {
+  background-color: #555;
 }
 
 .movieGrid {
@@ -53,7 +62,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.3s ease;
 }
 
 .container.dark .movieCard {
@@ -86,8 +95,18 @@
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {
   background-color: #0056b3;
+}
+
+.container.dark .button {
+  background-color: #444;
+  color: #fff;
+}
+
+.container.dark .button:hover {
+  background-color: #555;
 }
