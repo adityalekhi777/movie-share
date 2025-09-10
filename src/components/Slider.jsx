@@ -1,44 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import styles from './Slider.module.css';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useMovies } from '../context/MovieContext';
+import styles from './Slider.module.css';
 
 const Slider = () => {
   const { popularMovies } = useMovies();
-  const [currentIndex, setCurrentIndex] = useState(0);
+    const placeholder = "https://placehold.co/600x400";
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (popularMovies.length > 0) {
-        setCurrentIndex(prev => (prev + 1) % popularMovies.length);
-      }
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, [popularMovies]);
-
-  const prevSlide = () => {
-    if (popularMovies.length > 0) {
-      setCurrentIndex(prev => (prev - 1 + popularMovies.length) % popularMovies.length);
-    }
-  };
-
-  const nextSlide = () => {
-    if (popularMovies.length > 0) {
-      setCurrentIndex(prev => (prev + 1) % popularMovies.length);
-    }
-  };
+  console.log(popularMovies)
 
   if (!popularMovies || popularMovies.length === 0) {
     return <div className={styles.slider}>Loading popular movies...</div>;
   }
 
-  const movie = popularMovies[currentIndex];
-  const imageUrl = movie?.images?.poster?.full || movie?.images?.poster?.medium || '';
+  
+  const getImageUrl = (images) => {
+    if (images && images.banner && images.banner.length > 0) {
+      const url = images.banner[0];
+      return url.startsWith("http") ? url : `https://${url}`;
+    }
+    return placeholder;
+  };
+
 
   return (
     <div className={styles.slider}>
-      <button className={styles.navButton} onClick={prevSlide}>&laquo;</button>
-      <img className={styles.slideImage} src={imageUrl} alt={movie.title} />
-      <button className={styles.navButton} onClick={nextSlide}>&raquo;</button>
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={50}
+        slidesPerView={1}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 5000 }}
+      >
+        {popularMovies.map(movie => {
+          
+          return (
+            <SwiperSlide key={movie.ids.trakt}>
+              <img className={styles.slideImage}  src={getImageUrl(movie.images)} alt={movie.title} />
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
     </div>
   );
 };
