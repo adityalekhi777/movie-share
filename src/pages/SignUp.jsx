@@ -8,7 +8,7 @@ const SignUp = () => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signUp } = useAuth();
+  const { signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const { theme } = useTheme();
@@ -22,6 +22,17 @@ const SignUp = () => {
     } catch (error) {
       console.error("Sign up error:", error);
       setError('Failed to create an account');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    try {
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      console.error("Google Sign-In error:", error);
+      setError('Failed to sign in with Google');
     }
   };
 
@@ -56,6 +67,11 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
+        <div className={styles.divider}>or</div>
+        <button onClick={handleGoogleSignIn} className={styles.googleButton}>
+          <img src="/googleIcon.svg" alt="Google icon" className={styles.googleIcon} />
+          Sign up with Google
+        </button>
         <div className={styles.text}>
           Already have an account? <Link to="/login" className={styles.link}>Login</Link>
         </div>

@@ -7,7 +7,7 @@ import { useTheme } from "../context/ThemeContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const { theme } = useTheme();
@@ -21,6 +21,17 @@ const Login = () => {
     } catch (error) {
       console.error("Login error:", error);
       setError('Failed to log in');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    try {
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      console.error("Google Sign-In error:", error);
+      setError('Failed to sign in with Google');
     }
   };
 
@@ -48,6 +59,11 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className={styles.divider}>or</div>
+        <button onClick={handleGoogleSignIn} className={styles.googleButton}>
+          <img src="/googleIcon.svg" alt="Google icon" className={styles.googleIcon} />
+          Sign in with Google
+        </button>
         <div className={styles.text}>
           Don't have an account? <Link to="/signup" className={styles.link}>Sign Up</Link>
         </div>
