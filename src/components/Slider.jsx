@@ -20,8 +20,8 @@ const Slider = () => {
 
   
   const getImageUrl = (images) => {
-    if (images && images.banner && images.banner.length > 0) {
-      const url = images.banner[0];
+    if (images && images.fanart && images.fanart.length > 0) {
+      const url = images.fanart[0];
       return url.startsWith("http") ? url : `https://${url}`;
     }
     return placeholder;
@@ -34,6 +34,7 @@ const Slider = () => {
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
+        effect='card'
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000 }}
       >

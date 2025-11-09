@@ -1,18 +1,24 @@
 .slider {
-  max-width: 1200px; /* Or any other width you prefer */
-  margin: 20px auto;
-  position: relative;
+  width: 100vw;
+  margin-left: calc((100% - 100vw) / 2);  /* centers the slider across the full viewport width */
+  height: 50vh;       /* 35% of viewport height */
+  position: relative; /* necessary for absolutely positioned nav buttons */
+  overflow: hidden;   /* hides any overflow content */
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: -20px;
 }
 
 .slideImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* This ensures the image covers the slide area without distortion */
-  border-radius: 10px;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;      /* Crop image to cover container */
+  object-position: bottom; /* Align image to show bottom portion */
+  border-radius: 0;  /* remove border radius for seamless full-slider look */
 }
 
 .navButton {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   border: none;
   color: white;
   padding: 10px;
@@ -32,6 +38,12 @@
 
 .navButton:last-of-type {
   right: 10px;
+}
+
+@media (max-width: 768px) {
+  .slider {
+    height: 35vh; /* adjust if needed for mobile devices */
+  }
 }
 
 /* Additional styling for the slider can be added here */

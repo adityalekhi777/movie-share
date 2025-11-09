@@ -73,7 +73,7 @@ export const MovieProvider = ({ children }) => {
   const fetchPopularMovies = async () => {
     try {
       const response = await axios.get(
-        `https://api.trakt.tv/movies/popular?extended=images`,
+        `https://api.trakt.tv/movies/popular?extended=full,images`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -83,6 +83,7 @@ export const MovieProvider = ({ children }) => {
         }
       );
       setPopularMovies(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching popular movies:", error);
     }

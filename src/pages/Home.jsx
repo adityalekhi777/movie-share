@@ -35,8 +35,8 @@ const Home = () => {
 
   return (
     <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
-      <h1 className={styles.title}>Welcome to Movie Share</h1>
       <Slider />
+      <h1 className={styles.title}>Welcome to Movie Share</h1>
       <div className={styles.moviesContainer}>
         <h2>Popular Movies</h2>
         {saveMessage && <div className={styles.alert}>{saveMessage}</div>}
